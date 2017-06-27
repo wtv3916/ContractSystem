@@ -63,12 +63,12 @@ class InvoicesController < ApplicationController
 
   # Post /generate_invoices
   def generate_invoices
-    @invoices = Contract.generate_invoices(params[:contract_id])
+    @contract_id = params[:contract_id]
+    @invoices = Contract.generate_invoices(@contract_id)
+    redirect_to "/contracts/#{@contract_id}"
     if @invoices.present?
-      redirect_to invoices_list_path
       flash[:success] = "All invoices generated successfully!"
     else
-      redirect_to "/contracts/#{@contract_id}"
       flash[:notice] = 'Oops, something wrong, please try again!'
     end
   end
@@ -77,6 +77,7 @@ class InvoicesController < ApplicationController
   def invoices_list
     @invoice = Invoice.where(renting_phase_id: params[:renting_phase_id])
     @renting_phase = RentingPhase.find(params[:renting_phase_id])
+    @in_total = @invoice.sum(:total)
   end
 
   private
@@ -87,6 +88,6 @@ class InvoicesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def invoice_params
-      params.require(:invoice).permit(:start_date, :end_date, :due_date, :total, :contract_id)
+      params.require(:invoice).permit(:start_date, :end_date, :due_date, :total, :renting_phase_id)
     end
   end
