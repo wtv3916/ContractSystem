@@ -23,7 +23,7 @@
 			<tr>
 				<td><%= r.start_date.strftime("%F") %></td>
 				<td><%= r.end_date.strftime("%F") %></td>
-				<td><%= r.due_date %></td>
+				<td><%= r.due_date.strftime("%F") %></td>
 				<td><%= r.total %></td>
 				<% if LineItem.where(invoice_id: r.id).present? %>
 				<td><%= link_to 'Line Items', {:controller => "line_items", :action => "items", :invoice_id => r.id } %></td>
