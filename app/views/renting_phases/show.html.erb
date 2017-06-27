@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @renting_phase.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @renting_phase.end_date %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @renting_phase.price %>
+</p>
+
+<p>
+  <strong>Cycles:</strong>
+  <%= @renting_phase.cycles %>
+</p>
+
+<p>
+  <strong>Contract:</strong>
+  <%= @renting_phase.contract %>
+</p>
+
+<%= link_to 'Edit', edit_renting_phase_path(@renting_phase) %> |
+<%= link_to 'Back', renting_phases_path %>

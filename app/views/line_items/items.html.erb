@@ -1,0 +1,38 @@
+<% provide(:title, "LineItems") %>
+<p id="notice"><%= notice %></p>
+<div class="jumbotron">
+	<h2>Line items:</h2>
+	<fieldset>
+		<legend>Invoice:</legend>
+		<% if @invoice.present? %>
+		<p><%= @invoice.start_date.strftime("%F") %> --- <%= @invoice.end_date.strftime("%F") %></p>
+		<p>Due Date: <%= @invoice.due_date %></p>
+		<% end %>
+		<% if @invoice.present? %>	
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Start date</th>
+					<th>End date</th>
+					<th>Unit price</th>
+					<th>Units</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @items.each do |r| %>
+				<tr>
+					<td><%= r.start_date.strftime("%F") %></td>
+					<td><%= r.end_date.strftime("%F") %></td>
+					<td><%= r.unit_price %></td>
+					<td><%= r.units %></td>
+					<td><%= r.total %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+		<% else %>
+		<p>No Line Items.</p>
+		<% end %>		
+	</fieldset>
+</div>

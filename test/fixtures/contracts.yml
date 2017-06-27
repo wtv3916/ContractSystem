@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  renter: MyString
+  start_date: 2017-06-22 11:40:07
+  end_date: 2017-06-22 11:40:07
+
+two:
+  title: MyString
+  renter: MyString
+  start_date: 2017-06-22 11:40:07
+  end_date: 2017-06-22 11:40:07

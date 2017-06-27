@@ -1,0 +1,114 @@
+<% provide(:title, "Contract Details") %>
+<fieldset>
+	<legend>Contract:</legend>
+	<p>
+		<strong>Title:</strong>
+		<%= @contract.title %>
+	</p>
+
+	<p>
+		<strong>Renter:</strong>
+		<%= @contract.renter %>
+	</p>
+
+	<p>
+		<strong>Start date:</strong>
+		<%= @contract.start_date.strftime("%F") %>
+	</p>
+
+	<p>
+		<strong>End date:</strong>
+		<%= @contract.end_date.strftime("%F") %>
+	</p>
+</fieldset>
+<fieldset>
+	<legend>Renting Phases:</legend>
+	<% if @renting_phases.present? %>	
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Start date</th>
+				<th>End date</th>
+				<th>Price</th>
+				<th>Cycles(month(s))</th>
+				<th colspan="1"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @renting_phases.each do |r| %>
+			<tr>
+				<td><%= r.start_date.strftime("%F") %></td>
+				<td><%= r.end_date.strftime("%F") %></td>
+				<td><%= r.price %></td>
+				<td><%= r.cycles %></td>
+				<% if Invoice.where(renting_phase_id: r.id).present? %>
+				<td><%= link_to 'Invoices', {:controller => "invoices", :action => "invoices_list", :renting_phase_id => r.id } %></td>
+				<% else %>
+				<td>No any invoice yet!</td>
+				<% end %>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
+	<% else %>
+	<p>No renting phase yet! Please add at least one phase before generating the invoices.</p>
+	<% end %>		
+</fieldset>
+
+
+<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">+ Add a renting phase</button>
+<!-- Generate all of the invoices with a button -->
+<!-- Make sure the renting phases cover the whole contract -->
+<% if @renting_phases.present? && (@renting_phases.last.end_date - @contract.end_date) == 0 && (@renting_phases.first.start_date - @contract.start_date) == 0 && !@invoices_check.present? %>
+<%= form_for :invoices, :url => {controller: "invoices", action: "generate_invoices"} do %>
+<%= hidden_field_tag :contract_id, @contract.id %>
+<input type="submit" class="btn btn-default" value="Generate all Invoices"></input>
+<% end %>
+<% elsif @invoices_check.present? %>
+<button type="submit" class="btn btn-default" disabled="disabled">Invoices already exist!</button>
+<% else %>
+<button type="submit" class="btn btn-default" disabled="disabled">Phases must cover the whole contract period! </button>
+<% end %>
+<%= link_to 'Back', contracts_path %>
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Add a renting phase</h4>
+			</div>
+			<%= form_for :renting_phase, :url => {controller: "renting_phases", action: "generate_renting_phase", class: "form"} do |form| %>
+			<%= hidden_field_tag :contract_id, @contract.id %>
+			<div class="modal-body">
+				<div class="field form-group">
+					<%= form.label :start_date %>
+					<% if @renting_phases.present? %>
+					<%= form.date_field :start_date, value: @renting_phases.last.end_date + 1.day, min: @renting_phases.last.end_date + 1.day, max: @contract.end_date, id: :renting_phase_start_date, class: "form-control", required: "required" %>
+					<% else %>
+					<%= form.date_field :start_date, :value => @contract.start_date.strftime("%Y-%m-%d"), id: :renting_phase_start_date, class: "form-control", required: "required" %>
+					<% end %>
+				</div>
+				<div class="field form-group">
+					<%= form.label :end_date %> 
+					<%= form.date_field :end_date, min: @contract.start_date, max: @contract.end_date, id: :renting_phase_end_date, :discard_hour => true, class: "form-control", required: "required" %>
+				</div>
+				<div class="field form-group">
+					<%= form.label "The price paid monthly:" %>
+					<%= form.text_field :price, id: :price, class: "form-control", required: "required" %>
+				</div>
+				<div class="field form-group">
+					<%= form.label "How often do you want to pay?" %>
+					<%= form.select :cycles, (1..@max_cycles), id: :cycles, class: "form-control", required: "required" %> Month(s)
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<%= form.submit  :class => "btn btn-default", value: "Add" %>
+			</div>
+		</div>
+		<% end %>
+	</div>
+</div>

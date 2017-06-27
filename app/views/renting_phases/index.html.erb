@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Renting Phases</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Price</th>
+      <th>Cycles</th>
+      <th>Contract</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @renting_phases.each do |renting_phase| %>
+      <tr>
+        <td><%= renting_phase.start_date %></td>
+        <td><%= renting_phase.end_date %></td>
+        <td><%= renting_phase.price %></td>
+        <td><%= renting_phase.cycles %></td>
+        <td><%= renting_phase.contract %></td>
+        <td><%= link_to 'Show', renting_phase %></td>
+        <td><%= link_to 'Edit', edit_renting_phase_path(renting_phase) %></td>
+        <td><%= link_to 'Destroy', renting_phase, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Renting Phase', new_renting_phase_path %>

@@ -1,0 +1,41 @@
+<% provide(:title, "Invoices List") %>
+<p id="notice"><%= notice %></p>
+<div class="jumbotron">
+  <h2>Invoices list:</h2>
+<fieldset>
+	<legend>Renting Phases:</legend>
+	<% if @renting_phase.present? %>
+	<p><%= @renting_phase.start_date.strftime("%F") %> --- <%= @renting_phase.end_date.strftime("%F") %></p>
+	<% end %>
+	<% if @invoice.present? %>	
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Start date</th>
+				<th>End date</th>
+				<th>Due date</th>
+				<th>Total</th>
+				<th colspan="1"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @invoice.each do |r| %>
+			<tr>
+				<td><%= r.start_date.strftime("%F") %></td>
+				<td><%= r.end_date.strftime("%F") %></td>
+				<td><%= r.due_date %></td>
+				<td><%= r.total %></td>
+				<% if LineItem.where(invoice_id: r.id).present? %>
+				<td><%= link_to 'Line Items', {:controller => "line_items", :action => "items", :invoice_id => r.id } %></td>
+				<% else %>
+				<td>No any invoice yet!</td>
+				<% end %>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
+	<% else %>
+	<p>No renting phase yet! Please add at least one phase before generating the invoices.</p>
+	<% end %>		
+</fieldset>
+</div>

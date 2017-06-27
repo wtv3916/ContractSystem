@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_date: 2017-06-22 11:45:37
+  end_date: 2017-06-22 11:45:37
+  price: 9.99
+  cycles: 1
+  contract: one
+
+two:
+  start_date: 2017-06-22 11:45:37
+  end_date: 2017-06-22 11:45:37
+  price: 9.99
+  cycles: 1
+  contract: two

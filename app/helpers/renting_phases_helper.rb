@@ -1,0 +1,2 @@
+module RentingPhasesHelper
+end

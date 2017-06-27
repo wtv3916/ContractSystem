@@ -1,0 +1,42 @@
+<%= form_with(model: renting_phase, local: true) do |form| %>
+  <% if renting_phase.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(renting_phase.errors.count, "error") %> prohibited this renting_phase from being saved:</h2>
+
+      <ul>
+      <% renting_phase.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :start_date %>
+    <%= form.datetime_select :start_date, id: :renting_phase_start_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :end_date %>
+    <%= form.datetime_select :end_date, id: :renting_phase_end_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :price %>
+    <%= form.text_field :price, id: :renting_phase_price %>
+  </div>
+
+  <div class="field">
+    <%= form.label :cycles %>
+    <%= form.number_field :cycles, id: :renting_phase_cycles %>
+  </div>
+
+  <div class="field">
+    <%= form.label :contract_id %>
+    <%= form.text_field :contract_id, id: :renting_phase_contract_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
